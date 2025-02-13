@@ -1,0 +1,45 @@
+class Solution {
+  public:
+    vector<int> boundaryTraversal(Node *root) {
+        vector<int>res;
+        if(!root) return res;
+        if(!isLeaf(root)) res.push_back(root->data);
+        addleft(root,res);
+        addleave(root,res);
+        addright(root,res);
+        return res;
+    }
+    
+    void addleft(Node* root,vector<int>& res){
+        Node* curr= root->left;
+        while(curr){
+            if(!isLeaf(curr)) res.push_back(curr->data);
+            if(curr->left) curr=curr->left;
+            else curr=curr->right;
+        }
+    }
+    void addleave(Node* root,vector<int>& res ){
+        if(isLeaf(root)){ 
+            res.push_back(root->data);
+            return;
+            
+        }
+        if(root->left) addleave(root->left,res);
+        if(root->right) addleave(root->right,res);
+    }
+    void addright(Node* root,vector<int>& res){
+        Node* curr=root->right;
+        vector<int> tm;
+        while(curr){
+            if(!isLeaf(curr)) tm.push_back(curr->data);
+            if(curr->right) curr=curr->right;
+            else curr=curr->left;
+        }
+        for(int i=tm.size()-1;i>=0;i--){
+            res.push_back(tm[i]);
+        }
+    } 
+    bool isLeaf(Node* root){
+        if(!root->left && !root->right) return true;
+        else return false;
+    }
